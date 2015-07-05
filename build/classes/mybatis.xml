@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8" ?>     
+<!DOCTYPE configuration     
+    PUBLIC "-//mybatis.org//DTD Config 3.0//EN"     
+    "http://mybatis.org/dtd/mybatis-3-config.dtd">
+
+<configuration>
+	<typeAliases>
+		<!-- common -->
+		<typeAlias type="weber.logistics.module.common.model.Admin"
+			alias="Admin" />
+		<typeAlias type="weber.logistics.module.common.model.Nation"
+			alias="Nation" />
+		<typeAlias type="weber.logistics.module.common.model.Province"
+			alias="Province" />
+		<typeAlias type="weber.logistics.module.common.model.City"
+			alias="City" />
+		<typeAlias type="weber.logistics.module.common.model.Employee"
+			alias="Employee" />
+		<!-- car -->
+		<typeAlias type="weber.logistics.module.car.model.Bracket"
+			alias="Bracket" />
+		<typeAlias type="weber.logistics.module.car.model.Client"
+			alias="Client" />
+		<typeAlias type="weber.logistics.module.car.model.Container"
+			alias="Container" />
+		<typeAlias type="weber.logistics.module.car.model.OilCard"
+			alias="OilCard" />
+		<typeAlias type="weber.logistics.module.car.model.OilCardPayment"
+			alias="OilCardPayment" />
+		<typeAlias type="weber.logistics.module.car.model.Route"
+			alias="Route" />
+		<typeAlias type="weber.logistics.module.car.model.Trailer"
+			alias="Trailer" />
+		<!-- -->
+		<typeAlias type="weber.logistics.module.car.model.Trip"
+			alias="Trip" />
+		<typeAlias type="weber.logistics.module.car.model.TripMaintenance"
+			alias="TripMaintenance" />
+		<typeAlias type="weber.logistics.module.car.model.TripRoute"
+			alias="TripRoute" />
+		<typeAlias type="weber.logistics.module.car.model.TripTraffic"
+			alias="TripTraffic" />
+	</typeAliases>
+	<plugins>
+		<plugin interceptor="weber.logistics.framework.page.OffsetLimitInterceptor">
+			<property name="dialectClass"
+				value="weber.logistics.framework.page.dialect.MySQLDialect" />
+		</plugin>
+	</plugins>
+</configuration> 

@@ -1,0 +1,130 @@
+<?xml version="1.0" encoding="UTF-8" ?>  
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="weber.logistics.module.car.dao.ContainerDao">
+	<resultMap type="Container" id="ContainerMap">
+		<id column="c_id" property="id" />
+		<result column="c_code" property="code" />
+		<result column="c_name" property="name" />
+		<result column="c_buyDate" property="buyDate" />
+		<result column="c_price" property="price" />
+		<result column="c_size" property="size" />
+		<result column="c_remark" property="remark" />
+		<result column="c_entryDate" property="entryDate" />
+		<result column="c_status" property="status" />
+	</resultMap>
+	<!-- 新增记录 -->
+	<insert id="insert" parameterType="Container">
+	  <![CDATA[
+	    insert into t_container(id, code, name,
+	                            buyDate, price, size,
+	                            remark, entryDate)
+		                 values(#{id}, #{code}, #{name},
+		                       #{buyDate}, #{price}, #{size},
+		                       #{remark}, #{entryDate}
+		)
+	  ]]>
+	</insert>
+	<!-- 修改记录 -->
+	<update id="update" parameterType="Container">
+	  <![CDATA[
+	    update t_container
+		set
+		  code = #{code},
+		  name = #{name},
+		  buyDate = #{buyDate},
+		  price = #{price},
+		  size = #{size},
+		  remark = #{remark}
+		where
+		  id = #{id}
+	  ]]>
+	</update>
+	<!-- 查询单条记录 -->
+	<select id="selectOne" parameterType="Container" resultMap="ContainerMap">
+	  <![CDATA[
+	    select
+	      c.id as c_id,
+	      c.code as c_code,
+	      c.name as c_name,
+	      c.buyDate as c_buyDate,
+	      c.price as c_price,
+	      c.size as c_size,
+	      c.remark as c_remark,
+	      c.entryDate as c_entryDate,
+	      c.status as c_status
+		from t_container c
+		where id = #{id}
+	  ]]>
+	</select>
+	<select id="selectAll" resultMap="ContainerMap">
+		<![CDATA[
+	    select
+	      c.id as c_id,
+	      c.code as c_code,
+	      c.name as c_name,
+	      c.buyDate as c_buyDate,
+	      c.price as c_price,
+	      c.size as c_size,
+	      c.remark as c_remark,
+	      c.entryDate as c_entryDate,
+	      c.status as c_status
+		from t_container c
+	  ]]>
+	</select>
+	<select id="selectByCondition" resultMap="ContainerMap">
+		<![CDATA[
+	    select
+	      c.id as c_id,
+	      c.code as c_code,
+	      c.name as c_name,
+	      c.buyDate as c_buyDate,
+	      c.price as c_price,
+	      c.size as c_size,
+	      c.remark as c_remark,
+	      c.entryDate as c_entryDate,
+	      c.status as c_status
+		from t_container c
+	  ]]>
+	</select>
+	<select id="selectByConditionPage" parameterType="map"
+		resultMap="ContainerMap">
+		<![CDATA[
+	    select
+	      c.id as c_id,
+	      c.code as c_code,
+	      c.name as c_name,
+	      c.buyDate as c_buyDate,
+	      c.price as c_price,
+	      c.size as c_size,
+	      c.remark as c_remark,
+	      c.entryDate as c_entryDate,
+	      c.status as c_status
+		from t_container c
+	  ]]>
+		<where>
+			<if test="code != null">
+				c.code like CONCAT('%', #{code },'%')
+			</if>
+		</where>
+	</select>
+	<select id="selectByCode" parameterType="string" resultMap="ContainerMap">
+		<![CDATA[
+	    select
+	      c.id as c_id,
+	      c.code as c_code,
+	      c.name as c_name,
+	      c.buyDate as c_buyDate,
+	      c.price as c_price,
+	      c.size as c_size,
+	      c.remark as c_remark,
+	      c.entryDate as c_entryDate,
+	      c.status as c_status
+		from t_container c
+		where 
+		  code = #{code }
+	  ]]>
+	</select>
+</mapper>

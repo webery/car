@@ -1,0 +1,321 @@
+<?xml version="1.0" encoding="UTF-8" ?>  
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="weber.logistics.module.car.dao.TripDao">
+	<resultMap type="Trip" id="TripMap">
+		<id column="tr_id" property="id" />
+		<result column="tr_profit" property="profit" />
+		<result column="tr_earning" property="earning" />
+		<result column="tr_payment" property="payment" />
+		<result column="tr_salary" property="salary" />
+		<result column="tr_cash" property="cash" />
+		<result column="tr_roadToll" property="roadToll" />
+		<result column="tr_oilBalance" property="oilBalance" />
+		<result column="tr_oilPayment" property="oilPayment" />
+		<result column="tr_oilMoney" property="oilMoney" />
+		<result column="tr_maintenanceCosts" property="maintenanceCosts" />
+		<result column="tr_trafficTicket" property="trafficTicket" />
+		<result column="tr_allowance" property="allowance" />
+		<result column="tr_deductMoney" property="deductMoney" />
+		<result column="tr_reward" property="reward" />
+		<result column="tr_startDate" property="startDate" />
+		<result column="tr_finishDate" property="finishDate" />
+		<result column="tr_remark" property="remark" />
+		<result column="tr_isPay" property="isPay" />
+		<result column="tr_entryDate" property="entryDate" />
+		<result column="tr_status" property="status" />
+		<result column="e_id" property="employee.id" />
+		<result column="e_name" property="employee.name" />
+		<result column="t_id" property="trailer.id" />
+		<result column="t_name" property="trailer.name" />
+		<result column="t_plateNum" property="trailer.plateNum" />
+		<result column="c_id" property="container.id" />
+		<result column="c_code" property="container.code" />
+		<result column="c_name" property="container.name" />
+		<result column="b_id" property="bracket.id" />
+		<result column="b_plateNum" property="bracket.plateNum" />
+		<result column="b_name" property="bracket.name" />
+		<result column="o_id" property="oilcard.id" />
+		<result column="o_code" property="oilcard.code" />
+		<result column="o_name" property="oilcard.name" />
+	</resultMap>
+	<!-- 新增记录 -->
+	<insert id="insert" parameterType="Trip">
+	  <![CDATA[
+	    insert into t_trip(employee, trailer, container,
+	                      bracket, oilcard, salary,
+	                      cash, oilBalance,
+	                      startDate, finishDate, entryDate,
+	                      remark) 
+	                values(#{employee.id }, #{trailer.id }, #{container.id },
+	                       #{bracket.id }, #{oilcard.id }, #{salary },
+	                       #{cash }, #{oilBalance },
+	                       #{startDate }, #{finishDate }, #{entryDate },
+	                       #{remark })
+	  ]]>
+	</insert>
+	<delete id="delete" parameterType="Trip">
+		delete from t_trip
+		where
+		id =
+		#{id }
+	</delete>
+	<!-- 修改记录 -->
+	<update id="update" parameterType="Trip">
+       <![CDATA[
+          update t_trip
+          set
+            startDate = #{startDate},
+            finishDate = #{finishDate},
+            salary = #{salary},
+            cash = #{cash},
+            oilBalance = #{oilBalance},
+            oilMoney = #{oilMoney},
+            profit = #{profit},
+            roadToll = #{roadToll},
+            allowance = #{allowance},
+            reward = #{reward},
+            deductMoney = #{deductMoney},
+            remark = #{remark}
+          where
+            id = #{id }
+       ]]>
+	</update>
+	<!-- 查询单条记录 -->
+	<select id="selectOne" parameterType="Trip" resultMap="TripMap">
+      <![CDATA[
+        select
+          tr.id as tr_id,
+          tr.employee as tr_employee,
+          tr.trailer as tr_trailer,
+          tr.container as tr_container,
+          tr.bracket as tr_bracket,
+          tr.oilcard as tr_oilcard,
+          tr.profit as tr_profit,
+          tr.earning as tr_earning,
+          tr.payment as tr_payment,
+          tr.salary as tr_salary,
+          tr.cash as tr_cash,
+          tr.roadToll as tr_roadToll,
+          tr.oilBalance as tr_oilBalance,
+          tr.oilPayment as tr_oilPayment,
+          tr.oilMoney as tr_oilMoney,
+          tr.maintenanceCosts as tr_maintenanceCosts,
+          tr.trafficTicket as tr_trafficTicket,
+          tr.allowance as tr_allowance,
+          tr.deductMoney as tr_deductMoney,
+          tr.reward as tr_reward,
+          tr.startDate as tr_startDate,
+          tr.finishDate as tr_finishDate,
+          tr.remark as tr_remark,
+          tr.isPay as tr_isPay,
+          tr.entryDate as tr_entryDate,
+          tr.status as tr_status,
+          e.id as e_id,
+          e.name as e_name,
+          t.id as t_id,
+          t.name as t_name,
+          t.plateNum as t_plateNum,
+          c.id as c_id,
+          c.code as c_code,
+          c.name as c_name,
+          b.id as b_id,
+          b.plateNum as b_plateNum,
+          b.name as b_name,
+          o.id as o_id,
+          o.code as o_code,
+          o.name as o_name
+        from t_trip tr
+        left join t_employee e on e.id = tr.employee
+        left join t_trailer t on t.id = tr.trailer
+        left join t_container c on c.id = tr.container
+        left join t_bracket b on b.id = tr.bracket
+        left join t_oilcard o on o.id = tr.oilcard
+        where
+          tr.id = #{id }
+      ]]>
+	</select>
+	<select id="selectAll" resultType="Trip">
+	   <![CDATA[
+        select
+          tr.id as tr_id,
+          tr.employee as tr_employee,
+          tr.trailer as tr_trailer,
+          tr.container as tr_container,
+          tr.bracket as tr_bracket,
+          tr.oilcard as tr_oilcard,
+          tr.profit as tr_profit,
+          tr.earning as tr_earning,
+          tr.payment as tr_payment,
+          tr.salary as tr_salary,
+          tr.cash as tr_cash,
+          tr.roadToll as tr_roadToll,
+          tr.oilBalance as tr_oilBalance,
+          tr.oilPayment as tr_oilPayment,
+          tr.oilMoney as tr_oilMoney,
+          tr.maintenanceCosts as tr_maintenanceCosts,
+          tr.trafficTicket as tr_trafficTicket,
+          tr.allowance as tr_allowance,
+          tr.deductMoney as tr_deductMoney,
+          tr.reward as tr_reward,
+          tr.startDate as tr_startDate,
+          tr.finishDate as tr_finishDate,
+          tr.remark as tr_remark,
+          tr.isPay as tr_isPay,
+          tr.entryDate as tr_entryDate,
+          tr.status as tr_status,
+          e.id as e_id,
+          e.name as e_name,
+          t.id as t_id,
+          t.name as t_name,
+          t.plateNum as t_plateNum,
+          c.id as c_id,
+          c.code as c_code,
+          c.name as c_name,
+          b.id as b_id,
+          b.plateNum as b_plateNum,
+          b.name as b_name,
+          o.id as o_id,
+          o.code as o_code,
+          o.name as o_name
+        from t_trip tr
+        left join t_employee e on e.id = tr.employee
+        left join t_trailer t on t.id = tr.trailer
+        left join t_container c on c.id = tr.container
+        left join t_bracket b on b.id = tr.bracket
+        left join t_oilcard o on o.id = tr.oilcard
+      ]]>
+	</select>
+	<select id="selectByConditionPage" parameterType="map"
+		resultMap="TripMap">
+		<![CDATA[
+        select
+          tr.id as tr_id,
+          tr.employee as tr_employee,
+          tr.trailer as tr_trailer,
+          tr.container as tr_container,
+          tr.bracket as tr_bracket,
+          tr.oilcard as tr_oilcard,
+          tr.profit as tr_profit,
+          tr.earning as tr_earning,
+          tr.payment as tr_payment,
+          tr.salary as tr_salary,
+          tr.cash as tr_cash,
+          tr.roadToll as tr_roadToll,
+          tr.oilBalance as tr_oilBalance,
+          tr.oilPayment as tr_oilPayment,
+          tr.oilMoney as tr_oilMoney,
+          tr.maintenanceCosts as tr_maintenanceCosts,
+          tr.trafficTicket as tr_trafficTicket,
+          tr.allowance as tr_allowance,
+          tr.deductMoney as tr_deductMoney,
+          tr.reward as tr_reward,
+          tr.startDate as tr_startDate,
+          tr.finishDate as tr_finishDate,
+          tr.remark as tr_remark,
+          tr.isPay as tr_isPay,
+          tr.entryDate as tr_entryDate,
+          tr.status as tr_status,
+          e.id as e_id,
+          e.name as e_name,
+          t.id as t_id,
+          t.name as t_name,
+          t.plateNum as t_plateNum,
+          c.id as c_id,
+          c.code as c_code,
+          c.name as c_name,
+          b.id as b_id,
+          b.plateNum as b_plateNum,
+          b.name as b_name,
+          o.id as o_id,
+          o.code as o_code,
+          o.name as o_name
+        from t_trip tr
+        left join t_employee e on e.id = tr.employee
+        left join t_trailer t on t.id = tr.trailer
+        left join t_container c on c.id = tr.container
+        left join t_bracket b on b.id = tr.bracket
+        left join t_oilcard o on o.id = tr.oilcard
+      ]]>
+		<where>
+			<if test="status != null">
+				tr.status = #{status }
+			</if>
+			<if test="startDate != null">
+				and tr.startDate = #{startDate }
+			</if>
+		</where>
+	</select>
+	<update id="updateStatus" parameterType="Trip">
+	    <![CDATA[
+	      update t_trip
+		  set 
+		    status = #{status}
+		  where id = #{id}
+	   ]]>
+	</update>
+	<select id="selectByEmpIdAndStatus" parameterType="map"
+		resultMap="TripMap">
+	</select>
+	<select id="selectByEmpAndYearMonth" parameterType="map"
+		resultMap="TripMap">
+		<![CDATA[
+		select
+          tr.id as tr_id,
+          tr.employee as tr_employee,
+          tr.trailer as tr_trailer,
+          tr.container as tr_container,
+          tr.bracket as tr_bracket,
+          tr.oilcard as tr_oilcard,
+          tr.profit as tr_profit,
+          tr.earning as tr_earning,
+          tr.payment as tr_payment,
+          tr.salary as tr_salary,
+          tr.cash as tr_cash,
+          tr.roadToll as tr_roadToll,
+          tr.oilBalance as tr_oilBalance,
+          tr.oilPayment as tr_oilPayment,
+          tr.oilMoney as tr_oilMoney,
+          tr.maintenanceCosts as tr_maintenanceCosts,
+          tr.trafficTicket as tr_trafficTicket,
+          tr.allowance as tr_allowance,
+          tr.deductMoney as tr_deductMoney,
+          tr.reward as tr_reward,
+          tr.startDate as tr_startDate,
+          tr.finishDate as tr_finishDate,
+          tr.remark as tr_remark,
+          tr.isPay as tr_isPay,
+          tr.entryDate as tr_entryDate,
+          tr.status as tr_status,
+          e.id as e_id,
+          e.name as e_name,
+          t.id as t_id,
+          t.name as t_name,
+          t.plateNum as t_plateNum,
+          c.id as c_id,
+          c.code as c_code,
+          c.name as c_name,
+          b.id as b_id,
+          b.plateNum as b_plateNum,
+          b.name as b_name,
+          o.id as o_id,
+          o.code as o_code,
+          o.name as o_name
+        from t_trip tr
+        left join t_employee e on e.id = tr.employee
+        left join t_trailer t on t.id = tr.trailer
+        left join t_container c on c.id = tr.container
+        left join t_bracket b on b.id = tr.bracket
+        left join t_oilcard o on o.id = tr.oilcard
+        WHERE
+            tr.employee = #{empId }
+          AND DATE_FORMAT(tr.startDate, '%Y-%m') = #{yearMonth }
+        ]]>
+		<!-- <where> <if test="empId != null"> tr.employee = #{empId } </if> <if 
+			test="yearMonth != null"> AND DATE_FORMAT(tr.startDate, '%Y-%m') = #{yearMonth 
+			} </if> </where> -->
+
+	</select>
+</mapper>  

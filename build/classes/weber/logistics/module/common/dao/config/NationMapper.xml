@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8" ?>  
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="weber.logistics.module.common.dao.NationDao">
+	<!-- 新增记录 -->
+	<insert id="insert" parameterType="Nation" useGeneratedKeys="true"
+		keyProperty="id">
+		insert into t_nation(name)
+		values(#{name})
+	</insert>
+	<!-- 删除记录 -->
+	<delete id="delete" parameterType="Nation">
+		delete from t_nation where
+		id =
+		#{id}
+	</delete>
+	<!-- 修改记录 -->
+	<update id="update" parameterType="Nation">
+		update t_nation
+		set name =
+		#{name}
+		where id = #{id}
+	</update>
+	<!-- 查询单条记录 -->
+	<select id="selectOne" parameterType="Nation" resultType="Nation">
+		select
+		*
+		from t_nation where id = #{id}
+	</select>
+	<select id="selectAll" resultType="Nation">
+		select *
+		from t_nation
+	</select>
+
+</mapper>

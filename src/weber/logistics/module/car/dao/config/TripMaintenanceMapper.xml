@@ -1,0 +1,153 @@
+<?xml version="1.0" encoding="UTF-8" ?>  
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="weber.logistics.module.car.dao.TripMaintenanceDao">
+	<resultMap type="TripMaintenance" id="TripMaintenanceMap">
+		<id column="tm_id" property="id" />
+		<result column="tm_name" property="name" />
+		<result column="tm_money" property="money" />
+		<result column="tm_address" property="address" />
+		<result column="tm_remark" property="remark" />
+		<result column="tm_entryDate" property="entryDate" />
+		<result column="tm_status" property="status" />
+	</resultMap>
+	<!-- 新增记录 -->
+	<insert id="insert" parameterType="TripMaintenance">
+	   <![CDATA[
+	      insert into t_trip_maintenance
+	                  (id, name, money,
+	                   address, remark, entryDate)
+		        values(#{id}, #{name}, #{money},
+		               #{address}, #{remark}, #{entryDate})
+	   ]]>
+	</insert>
+	<!-- 真删除记录 -->
+	<delete id="delete" parameterType="TripMaintenance">
+	   <![CDATA[
+	      delete from t_trip_maintenance
+		  where 
+		    id = #{id}
+	   ]]>
+	</delete>
+	<!-- 修改记录 -->
+	<update id="update" parameterType="TripMaintenance">
+	   <![CDATA[
+	      update t_trip_maintenance
+		  set
+		    name = #{name},
+		    money = #{money},
+		    address = #{address},
+		    remark = #{remark}
+		  where
+		    id = #{id }
+	   ]]>
+	</update>
+	<!-- 查询单条记录 -->
+	<select id="selectOne" parameterType="TripMaintenance"
+		resultMap="TripMaintenanceMap">
+		<![CDATA[
+		   select
+		     tm.id as tm_id,
+		     tm.name as tm_name,
+		     tm.money as tm_money,
+		     tm.address as tm_address,
+		     tm.remark as tm_remark,
+		     tm.entryDate as tm_entryDate,
+		     tm.status as tm_status
+		   from t_trip_maintenance tm
+		   where
+		     tm.id = #{id}
+		]]>
+	</select>
+	<select id="selectAll" resultType="TripMaintenance">
+		<![CDATA[
+		   select
+		     tm.id as tm_id,
+		     tm.name as tm_name,
+		     tm.money as tm_money,
+		     tm.address as tm_address,
+		     tm.remark as tm_remark,
+		     tm.entryDate as tm_entryDate,
+		     tm.status as tm_status
+		   from t_trip_maintenance tm
+		]]>
+	</select>
+	<select id="selectByConditionPage" parameterType="map"
+		resultMap="TripMaintenanceMap">
+		<![CDATA[
+		   select
+		     tm.id as tm_id,
+		     tm.name as tm_name,
+		     tm.money as tm_money,
+		     tm.address as tm_address,
+		     tm.remark as tm_remark,
+		     tm.entryDate as tm_entryDate,
+		     tm.status as tm_status
+		   from t_trip_maintenance tm
+		]]>
+	</select>
+	<select id="selectByTrip" parameterType="Trip" resultMap="TripMaintenanceMap">
+		<![CDATA[
+		   select
+		     tm.id as tm_id,
+		     tm.name as tm_name,
+		     tm.money as tm_money,
+		     tm.address as tm_address,
+		     tm.remark as tm_remark,
+		     tm.entryDate as tm_entryDate,
+		     tm.status as tm_status
+		   from t_trip_maintenance tm
+		   where
+		     tm.id = #{id}
+		]]>
+	</select>
+	<select id="countMoneyByTrip" parameterType="map" resultType="integer">
+		select sum(money)
+		from t_trip_maintenance
+		where
+		trip
+		= #{tripId}
+		and
+		(status
+		=
+		#{goingStatus}
+		or status = #{finishStatus})
+	</select>
+	<update id="updateStatusByTripMaintenance" parameterType="TripMaintenance">
+		update
+		t_trip_maintenance
+		set
+		status =
+		#{status}
+		where id = #{id}
+	</update>
+	<update id="updateStatusByTrip" parameterType="Trip">
+		update
+		t_trip_maintenance
+		set
+		status =
+		#{status}
+		where id = #{id}
+	</update>
+	<update id="updateStatusWithFilterByTrip" parameterType="map">
+		update
+		t_trip_maintenance
+		set
+		status =
+		#{status}
+		where trip = #{tripId} and
+		status !=
+		#{statusFilter}
+	</update>
+	<select id="selectByTripIdAndStatus" parameterType="map"
+		resultMap="TripMaintenanceMap">
+	</select>
+	<delete id="deleteByTrip" parameterType="Trip">
+		delete from
+		t_trip_maintenance
+		where
+		id = #{id }
+	</delete>
+</mapper>  

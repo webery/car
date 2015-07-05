@@ -1,0 +1,130 @@
+<?xml version="1.0" encoding="UTF-8" ?>  
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="weber.logistics.module.car.dao.BracketDao">
+	<resultMap type="Bracket" id="BracketMap">
+		<id column="b_id" property="id" />
+		<result column="b_plateNum" property="plateNum" />
+		<result column="b_name" property="name" />
+		<result column="b_size" property="size" />
+		<result column="b_buyDate" property="buyDate" />
+		<result column="b_price" property="price" />
+		<result column="b_remark" property="remark" />
+		<result column="b_entryDate" property="entryDate" />
+		<result column="b_status" property="status" />
+	</resultMap>
+	<!-- 新增记录 -->
+	<insert id="insert" parameterType="Bracket">
+	  <![CDATA[
+	    insert into t_bracket(id, plateNum, name,
+	                          size, buyDate, price, 
+	                          remark, entryDate)
+		              values(#{id }, #{plateNum }, #{name },
+		                     #{size }, #{buyDate }, #{price },
+		                     #{remark }, #{entryDate })
+	  ]]>
+	</insert>
+	<!-- 修改记录 -->
+	<update id="update" parameterType="Bracket">
+	   <![CDATA[
+	     update t_bracket
+		 set
+		   plateNum = #{plateNum},
+		   name = #{name},
+		   size = #{size},
+		   buyDate = #{buyDate},
+		   price = #{price},
+		   remark = #{remark}
+		  where 
+		    id = #{id}
+	    ]]>
+	</update>
+	<!-- 查询单条记录 -->
+	<select id="selectOne" parameterType="Bracket" resultMap="BracketMap">
+	  <![CDATA[
+	    select
+	      b.id as b_id,
+	      b.plateNum as b_plateNum,
+	      b.name as b_name,
+	      b.size as b_size,
+	      b.buyDate as b_buyDate,
+	      b.price as b_price,
+	      b.remark as b_remark,
+	      b.entryDate as b_entryDate,
+	      b.status as b_status
+		from t_bracket b
+		where 
+		  id = #{id}
+	  ]]>
+	</select>
+	<select id="selectAll" resultMap="BracketMap">
+		 <![CDATA[
+	    select
+	      b.id as b_id,
+	      b.plateNum as b_plateNum,
+	      b.name as b_name,
+	      b.size as b_size,
+	      b.buyDate as b_buyDate,
+	      b.price as b_price,
+	      b.remark as b_remark,
+	      b.entryDate as b_entryDate,
+	      b.status as b_status
+		from t_bracket b
+	  ]]>
+	</select>
+	<select id="selectByCondition" resultMap="BracketMap">
+		 <![CDATA[
+	    select
+	      b.id as b_id,
+	      b.plateNum as b_plateNum,
+	      b.name as b_name,
+	      b.size as b_size,
+	      b.buyDate as b_buyDate,
+	      b.price as b_price,
+	      b.remark as b_remark,
+	      b.entryDate as b_entryDate,
+	      b.status as b_status
+		from t_bracket b
+	  ]]>
+	</select>
+	<select id="selectByConditionPage" parameterType="map"
+		resultMap="BracketMap">
+		 <![CDATA[
+	    select
+	      b.id as b_id,
+	      b.plateNum as b_plateNum,
+	      b.name as b_name,
+	      b.size as b_size,
+	      b.buyDate as b_buyDate,
+	      b.price as b_price,
+	      b.remark as b_remark,
+	      b.entryDate as b_entryDate,
+	      b.status as b_status
+		from t_bracket b
+	  ]]>
+		<where>
+			<if test="plateNum != null">
+				b.plateNum like CONCAT('%', #{plateNum },'%')
+			</if>
+		</where>
+	</select>
+	<select id="selectByPlateNum" parameterType="string" resultMap="BracketMap">
+		 <![CDATA[
+	    select
+	      b.id as b_id,
+	      b.plateNum as b_plateNum,
+	      b.name as b_name,
+	      b.size as b_size,
+	      b.buyDate as b_buyDate,
+	      b.price as b_price,
+	      b.remark as b_remark,
+	      b.entryDate as b_entryDate,
+	      b.status as b_status
+		from t_bracket b
+		where 
+		  plateNum = #{plateNum }
+	  ]]>
+	</select>
+</mapper>

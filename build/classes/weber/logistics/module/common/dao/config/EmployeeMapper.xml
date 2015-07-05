@@ -1,0 +1,154 @@
+<?xml version="1.0" encoding="UTF-8" ?>  
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="weber.logistics.module.common.dao.EmployeeDao">
+	<resultMap type="Employee" id="EmployeeMap">
+		<id column="t_id" property="id" />
+		<result column="t_name" property="name" />
+		<result column="t_gender" property="gender" />
+		<result column="t_birth" property="birth" />
+		<result column="t_name" property="name" />
+		<result column="t_phone" property="phone" />
+		<result column="t_address" property="address" />
+		<result column="t_position" property="position" />
+		<result column="t_startDate" property="startDate" />
+		<result column="t_entryDate" property="entryDate" />
+		<result column="t_remark" property="remark" />
+		<result column="t_status" property="status" />
+		<result column="t_leaveDate" property="leaveDate" />
+		<result column="t_status" property="status" />
+		<result column="t_leaveDate" property="leaveDate" />
+		<result column="t_password" property="password" />
+		<result column="t_salt" property="salt" />
+		<result column="n_id" property="nation.id" />
+		<result column="n_name" property="nation.name" />
+		<result column="p_id" property="province.id" />
+		<result column="p_name" property="province.name" />
+	</resultMap>
+	<!-- 新增记录 -->
+	<insert id="insert" parameterType="Employee">
+	  <![CDATA[
+	    insert into t_employee(id, name, gender,
+	                           birth, nation, phone,
+	                           province, address, position,
+	                           startDate, entryDate,remark,
+	                           leaveDate, password, salt)
+		                values(#{id}, #{name}, #{gender},
+		                      #{birth}, #{nation.id}, #{phone},
+		                      #{province.id}, #{address}, #{position},
+		                      #{startDate }, #{entryDate}, #{remark},
+		                      #{leaveDate}, #{password }, #{salt })
+	  ]]>
+	</insert>
+	<!-- 修改记录 nation = #{nation.id}, province = #{province.id}, -->
+	<update id="update" parameterType="Employee">
+	  <![CDATA[
+	    update t_employee
+		set
+		  name = #{name},
+		  gender = #{gender},
+		  birth = #{birth},
+		  phone = #{phone},
+		  address = #{address},
+		  position = #{position},
+		  startDate = #{startDate},
+		  remark = #{remark}
+		where id = #{id}
+	  ]]>
+	</update>
+	<!-- 查询单条记录 -->
+	<select id="selectOne" parameterType="Employee" resultMap="EmployeeMap">
+	   <![CDATA[
+	     select
+	       t.id as t_id,
+		   t.name as t_name,
+		   t.gender as t_gender,
+		   t.birth as t_birth,
+		   t.nation as t_nation,
+		   t.phone as t_phone,
+		   t.province as t_province,
+		   t.address as t_address,
+		   t.position as t_position,
+		   t.startDate as t_startDate,
+		   t.entryDate as t_entryDate,
+		   t.remark as t_remark,
+		   t.status as t_status,
+		   t.leaveDate as t_leaveDate,
+		   t.password as t_password,
+		   t.salt as t_salt,
+		   n.id as n_id,
+		   n.name as n_name,
+	 	   p.id as p_id,
+		   p.name as p_name
+		 from t_employee t
+		 LEFT JOIN t_nation n ON t.nation = n.id
+		 LEFT JOIN t_province p ON t.province = p.id
+		 where 
+		   t.id = #{id}
+	   ]]>
+	</select>
+	<select id="selectAll" resultMap="EmployeeMap">
+		<![CDATA[
+	     select
+	       t.id as t_id,
+		   t.name as t_name,
+		   t.gender as t_gender,
+		   t.birth as t_birth,
+		   t.nation as t_nation,
+		   t.phone as t_phone,
+		   t.province as t_province,
+		   t.address as t_address,
+		   t.position as t_position,
+		   t.startDate as t_startDate,
+		   t.entryDate as t_entryDate,
+		   t.remark as t_remark,
+		   t.status as t_status,
+		   t.leaveDate as t_leaveDate,
+		   t.password as t_password,
+		   t.salt as t_salt,
+		   n.id as n_id,
+		   n.name as n_name,
+	 	   p.id as p_id,
+		   p.name as p_name
+		 from t_employee t
+		 LEFT JOIN t_nation n ON t.nation = n.id
+		 LEFT JOIN t_province p ON t.province = p.id
+	   ]]>
+	</select>
+	<select id="selectByConditionPage" parameterType="map"
+		resultMap="EmployeeMap">
+		<![CDATA[
+	     select
+	       t.id as t_id,
+		   t.name as t_name,
+		   t.gender as t_gender,
+		   t.birth as t_birth,
+		   t.nation as t_nation,
+		   t.phone as t_phone,
+		   t.province as t_province,
+		   t.address as t_address,
+		   t.position as t_position,
+		   t.startDate as t_startDate,
+		   t.entryDate as t_entryDate,
+		   t.remark as t_remark,
+		   t.status as t_status,
+		   t.leaveDate as t_leaveDate,
+		   t.password as t_password,
+		   t.salt as t_salt,
+		   n.id as n_id,
+		   n.name as n_name,
+	 	   p.id as p_id,
+		   p.name as p_name
+		 from t_employee t
+		 LEFT JOIN t_nation n ON t.nation = n.id
+		 LEFT JOIN t_province p ON t.province = p.id
+	   ]]>
+		<where>
+			<if test="name != null">
+				t.name like CONCAT('%', #{name },'%')
+			</if>
+		</where>
+	</select>
+</mapper>  

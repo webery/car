@@ -1,0 +1,302 @@
+<?xml version="1.0" encoding="UTF-8" ?>  
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="weber.logistics.module.car.dao.TrailerDao">
+	<resultMap type="Trailer" id="TrailerMap">
+		<id column="t_id" property="id" />
+		<result column="t_name" property="name" />
+		<result column="t_plateNum" property="plateNum" />
+		<result column="t_buyDate" property="buyDate" />
+		<result column="t_price" property="price" />
+		<result column="t_remark" property="remark" />
+		<result column="t_entryDate" property="entryDate" />
+		<result column="t_status" property="status" />
+		<result column="e_id" property="employee.id" />
+		<result column="e_name" property="employee.name" />
+		<result column="c_id" property="container.id" />
+		<result column="c_code" property="container.code" />
+		<result column="c_name" property="container.name" />
+		<result column="b_id" property="bracket.id" />
+		<result column="b_name" property="bracket.name" />
+		<result column="b_plateNum" property="bracket.plateNum" />
+	</resultMap>
+
+	<!-- 新增记录 -->
+	<insert id="insert" parameterType="Trailer">
+	   <![CDATA[
+	     insert into t_trailer
+	            (id, name, plateNum,
+	             buyDate, price, remark,
+	             entryDate)
+		  values(#{id}, #{name}, #{plateNum},
+		        #{buyDate}, #{price}, #{remark},
+		        #{entryDate})
+	   ]]>
+	</insert>
+	<!-- 修改记录 -->
+	<update id="update" parameterType="Trailer">
+	  <![CDATA[
+	    update t_trailer
+		set
+		  plateNum = #{plateNum},
+		  name = #{name},
+		  buyDate = #{buyDate},
+		  price = #{price},
+		  remark = #{remark}
+		where 
+		  id = #{id}
+	  ]]>
+	</update>
+	<update id="updateContAndBkAndEmp" parameterType="Trailer">
+		update
+		t_trailer
+		set container = #{container.id},
+		bracket = #{bracket.id},
+		employee =
+		#{employee.id}
+		where id = #{id}
+	</update>
+	<!-- 查询单条记录 -->
+	<select id="selectOne" parameterType="Trailer" resultMap="TrailerMap">
+	   <![CDATA[
+	     select
+		   t.id as t_id, 
+		   t.name as t_name,
+		   t.plateNum as t_plateNum,
+		   t.buyDate as t_buyDate,
+		   t.price as t_price,
+		   t.employee as t_employee,
+		   t.container as t_container,
+		   t.bracket as t_bracket,
+		   t.remark as t_remark,
+		   t.entryDate as t_entryDate,
+		   t.status as t_status,
+		   e.id as e_id,
+		   e.name as e_name,
+		   c.id as c_id,
+		   c.code as c_code,
+		   c.name as c_name,
+		   b.id as b_id,
+		   b.name as b_name,
+		   b.plateNum as b_plateNum
+		 from t_trailer t
+		 LEFT JOIN t_employee e ON t.employee = e.id
+		 LEFT JOIN t_container c ON t.container = c.id
+		 LEFT JOIN t_bracket b ON t.bracket = b.id
+		 WHERE 
+		   t.id = #{id }
+	   ]]>
+	</select>
+	<select id="selectAll" resultMap="TrailerMap">
+		<![CDATA[
+	     select
+		   t.id as t_id, 
+		   t.name as t_name,
+		   t.plateNum as t_plateNum,
+		   t.buyDate as t_buyDate,
+		   t.price as t_price,
+		   t.employee as t_employee,
+		   t.container as t_container,
+		   t.bracket as t_bracket,
+		   t.remark as t_remark,
+		   t.entryDate as t_entryDate,
+		   t.status as t_status,
+		   e.id as e_id,
+		   e.name as e_name,
+		   c.id as c_id,
+		   c.code as c_code,
+		   c.name as c_name,
+		   b.id as b_id,
+		   b.name as b_name,
+		   b.plateNum as b_plateNum
+		 from t_trailer t
+		 LEFT JOIN t_employee e ON t.employee = e.id
+		 LEFT JOIN t_container c ON t.container = c.id
+		 LEFT JOIN t_bracket b ON t.bracket = b.id
+	   ]]>
+	</select>
+	<select id="selectByCondition" resultMap="TrailerMap">
+		<![CDATA[
+	     select
+		   t.id as t_id, 
+		   t.name as t_name,
+		   t.plateNum as t_plateNum,
+		   t.buyDate as t_buyDate,
+		   t.price as t_price,
+		   t.employee as t_employee,
+		   t.container as t_container,
+		   t.bracket as t_bracket,
+		   t.remark as t_remark,
+		   t.entryDate as t_entryDate,
+		   t.status as t_status,
+		   e.id as e_id,
+		   e.name as e_name,
+		   c.id as c_id,
+		   c.code as c_code,
+		   c.name as c_name,
+		   b.id as b_id,
+		   b.name as b_name,
+		   b.plateNum as b_plateNum
+		 from t_trailer t
+		 LEFT JOIN t_employee e ON t.employee = e.id
+		 LEFT JOIN t_container c ON t.container = c.id
+		 LEFT JOIN t_bracket b ON t.bracket = b.id
+	   ]]>
+	</select>
+	<select id="selectByConditionPage" parameterType="map"
+		resultMap="TrailerMap">
+		<![CDATA[
+	     select
+		   t.id as t_id, 
+		   t.name as t_name,
+		   t.plateNum as t_plateNum,
+		   t.buyDate as t_buyDate,
+		   t.price as t_price,
+		   t.employee as t_employee,
+		   t.container as t_container,
+		   t.bracket as t_bracket,
+		   t.remark as t_remark,
+		   t.entryDate as t_entryDate,
+		   t.status as t_status,
+		   e.id as e_id,
+		   e.name as e_name,
+		   c.id as c_id,
+		   c.code as c_code,
+		   c.name as c_name,
+		   b.id as b_id,
+		   b.name as b_name,
+		   b.plateNum as b_plateNum
+		 from t_trailer t
+		 LEFT JOIN t_employee e ON t.employee = e.id
+		 LEFT JOIN t_container c ON t.container = c.id
+		 LEFT JOIN t_bracket b ON t.bracket = b.id
+	   ]]>
+		<where>
+			<if test="plateNum != null">
+				t.plateNum like CONCAT('%', #{plateNum },'%')
+			</if>
+		</where>
+	</select>
+	<select id="selectByPlateNum" parameterType="string" resultMap="TrailerMap">
+		<![CDATA[
+	     select
+		   t.id as t_id, 
+		   t.name as t_name,
+		   t.plateNum as t_plateNum,
+		   t.buyDate as t_buyDate,
+		   t.price as t_price,
+		   t.employee as t_employee,
+		   t.container as t_container,
+		   t.bracket as t_bracket,
+		   t.remark as t_remark,
+		   t.entryDate as t_entryDate,
+		   t.status as t_status,
+		   e.id as e_id,
+		   e.name as e_name,
+		   c.id as c_id,
+		   c.code as c_code,
+		   c.name as c_name,
+		   b.id as b_id,
+		   b.name as b_name,
+		   b.plateNum as b_plateNum
+		 from t_trailer t
+		 LEFT JOIN t_employee e ON t.employee = e.id
+		 LEFT JOIN t_container c ON t.container = c.id
+		 LEFT JOIN t_bracket b ON t.bracket = b.id
+		 where 
+		   t.plateNum = #{plateNum }
+	   ]]>
+	</select>
+	<select id="selectByEmp" parameterType="string" resultMap="TrailerMap">
+		<![CDATA[
+	     select
+		   t.id as t_id, 
+		   t.name as t_name,
+		   t.plateNum as t_plateNum,
+		   t.buyDate as t_buyDate,
+		   t.price as t_price,
+		   t.employee as t_employee,
+		   t.container as t_container,
+		   t.bracket as t_bracket,
+		   t.remark as t_remark,
+		   t.entryDate as t_entryDate,
+		   t.status as t_status,
+		   e.id as e_id,
+		   e.name as e_name,
+		   c.id as c_id,
+		   c.code as c_code,
+		   c.name as c_name,
+		   b.id as b_id,
+		   b.name as b_name,
+		   b.plateNum as b_plateNum
+		 from t_trailer t
+		 LEFT JOIN t_employee e ON t.employee = e.id
+		 LEFT JOIN t_container c ON t.container = c.id
+		 LEFT JOIN t_bracket b ON t.bracket = b.id
+		 WHERE 
+		   t.employee = #{empId }
+	   ]]>
+	</select>
+	<select id="selectByContainer" parameterType="string" resultMap="TrailerMap">
+		<![CDATA[
+	     select
+		   t.id as t_id, 
+		   t.name as t_name,
+		   t.plateNum as t_plateNum,
+		   t.buyDate as t_buyDate,
+		   t.price as t_price,
+		   t.employee as t_employee,
+		   t.container as t_container,
+		   t.bracket as t_bracket,
+		   t.remark as t_remark,
+		   t.entryDate as t_entryDate,
+		   t.status as t_status,
+		   e.id as e_id,
+		   e.name as e_name,
+		   c.id as c_id,
+		   c.code as c_code,
+		   c.name as c_name,
+		   b.id as b_id,
+		   b.name as b_name,
+		   b.plateNum as b_plateNum
+		 from t_trailer t
+		 LEFT JOIN t_employee e ON t.employee = e.id
+		 LEFT JOIN t_container c ON t.container = c.id
+		 LEFT JOIN t_bracket b ON t.bracket = b.id
+		 WHERE 
+		   t.container = #{containerId }
+	   ]]>
+	</select>
+	<select id="selectByBracket" parameterType="string" resultMap="TrailerMap">
+			<![CDATA[
+	     select
+		   t.id as t_id, 
+		   t.name as t_name,
+		   t.plateNum as t_plateNum,
+		   t.buyDate as t_buyDate,
+		   t.price as t_price,
+		   t.employee as t_employee,
+		   t.container as t_container,
+		   t.bracket as t_bracket,
+		   t.remark as t_remark,
+		   t.entryDate as t_entryDate,
+		   t.status as t_status,
+		   e.id as e_id,
+		   e.name as e_name,
+		   c.id as c_id,
+		   c.code as c_code,
+		   c.name as c_name,
+		   b.id as b_id,
+		   b.name as b_name,
+		   b.plateNum as b_plateNum
+		 from t_trailer t
+		 LEFT JOIN t_employee e ON t.employee = e.id
+		 LEFT JOIN t_container c ON t.container = c.id
+		 LEFT JOIN t_bracket b ON t.bracket = b.id
+		 WHERE 
+		   t.bracket = #{bracketId }
+	   ]]>
+	</select>
+</mapper>

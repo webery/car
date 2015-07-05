@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="UTF-8" ?>  
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="weber.logistics.module.car.dao.OilCardDao">
+	<resultMap type="OilCard" id="OilCardMap">
+		<id column="o_id" property="id" />
+		<result column="o_code" property="code" />
+		<result column="o_name" property="name" />
+		<result column="o_money" property="money" />
+		<result column="o_entryDate" property="entryDate" />
+		<result column="o_status" property="status" />
+	</resultMap>
+	<!-- 新增记录 -->
+	<insert id="insert" parameterType="OilCard">
+	  <![CDATA[
+	    insert into t_oilCard(id, code, name,
+	                         money, entryDate)
+		               values(#{id }, #{code },#{name },
+		                      #{money}, #{entryDate})
+	  ]]>
+	</insert>
+	<!-- 修改记录 -->
+	<update id="update" parameterType="OilCard">
+	   <![CDATA[
+	     update t_oilCard
+		 set
+		   name = #{name }
+		where 
+		  id = #{id }
+	   ]]>
+	</update>
+	<!-- 查询单条记录 -->
+	<select id="selectOne" parameterType="OilCard" resultMap="OilCardMap">
+	  <![CDATA[
+	    select
+		  o.id as o_id,
+		  o.code as o_code,
+		  o.name as o_name,
+		  o.money as o_money,
+		  o.entryDate as o_entryDate,
+		  o.status as o_status
+		from t_oilCard o
+		where 
+		  o.id = #{id}
+	  ]]>
+	</select>
+	<select id="selectByConditionPage" parameterType="map"
+		resultMap="OilCardMap">
+		<![CDATA[
+	    select
+		  o.id as o_id,
+		  o.code as o_code,
+		  o.name as o_name,
+		  o.money as o_money,
+		  o.entryDate as o_entryDate,
+		  o.status as o_status
+		from t_oilCard o
+	  ]]>
+	  <where>
+			<if test="code != null">
+				o.code like CONCAT('%', #{code },'%')
+			</if>
+		</where>
+	</select>
+	<select id="selectByCode" parameterType="string" resultMap="OilCardMap">
+		<![CDATA[
+	    select
+		  o.id as o_id,
+		  o.code as o_code,
+		  o.name as o_name,
+		  o.money as o_money,
+		  o.entryDate as o_entryDate,
+		  o.status as o_status
+		from t_oilCard o
+		where 
+		  o.code = #{code}
+	  ]]>
+	</select>
+</mapper>  

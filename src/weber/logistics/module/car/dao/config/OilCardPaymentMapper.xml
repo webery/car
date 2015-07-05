@@ -1,0 +1,198 @@
+<?xml version="1.0" encoding="UTF-8" ?>  
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="weber.logistics.module.car.dao.OilCardPaymentDao">
+	<resultMap type="OilCardPayment" id="OilCardPaymentMap">
+		<id column="op_id" property="id" />
+		<result column="op_money" property="money" />
+		<result column="op_balance" property="balance" />
+		<result column="op_payDate" property="payDate" />
+		<result column="op_remark" property="remark" />
+		<result column="op_entryDate" property="entryDate" />
+		<result column="op_status" property="status" />
+		<result column="o_id" property="oilCard.id" />
+		<result column="o_code" property="oilCard.code" />
+		<result column="o_name" property="oilCard.name" />
+		<result column="op_trip" property="trip.id" />
+		<result column="op_trip_route" property="tripRoute.id" />
+		<result column="r_id" property="route.id" />
+		<result column="r_name" property="route.name" />
+		<result column="c_id" property="client.id" />
+		<result column="c_code" property="client.code" />
+		<result column="c_name" property="client.name" />
+	</resultMap>
+	<!-- 新增记录 -->
+	<insert id="insert" parameterType="OilCardPayment">
+	  <![CDATA[
+	     insert into t_oilcard_payment
+	                (id, oilcard, trip,
+	                 trip_route, route, client,
+	                 money, payDate, remark,
+	                 entryDate)
+	          values(#{id}, #{oilCard.id }, #{trip.id},
+	                 #{tripRoute.id}, #{route.id }, #{client.id},
+	                 #{money}, #{payDate}, #{remark },
+	                 #{entryDate })
+	  ]]>
+	</insert>
+	<!-- 修改记录 -->
+	<update id="update" parameterType="OilCardPayment">
+	   <![CDATA[
+	      update t_oilcard_payment
+	      set
+	        money = #{money },
+	        payDate = #{payDate },
+	        remark = #{remark }
+	      where
+	        id = #{id }
+	   ]]>
+	</update>
+	<delete id="delete" parameterType="OilCardPayment">
+		delete from t_oilcard_payment
+		where
+		id = #{id }
+	</delete>
+	<!-- 查询单条记录 -->
+	<select id="selectOne" parameterType="OilCardPayment" resultMap="OilCardPaymentMap">
+	  <![CDATA[
+	      select
+	        op.id as op_id,
+	        op.oilcard as op_oilcard,
+	        op.trip as op_trip,
+	        op.trip_route as op_trip_route,
+	        op.route as op_route,
+	        op.client as op_client,
+	        op.money as op_money,
+	        op.balance as op_balance,
+	        op.payDate as op_payDate,
+	        op.remark as op_remark,
+	        op.entryDate as op_entryDate,
+	        op.status as op_status,
+	        o.id as o_id,
+	        o.code as o_code,
+	        o.name as o_name,
+	        r.id as r_id,
+	        r.name as r_name,
+	        c.id as c_id,
+	        c.code as c_code,
+	        c.name as c_name
+	      from t_oilcard_payment op
+	      LEFT JOIN t_oilcard o ON o.id = op.oilcard
+	      LEFT JOIN t_route r ON r.id = op.route
+	      LEFT JOIN t_client c ON c.id = op.client
+	      WHERE
+	        op.id = #{id }
+	  ]]>
+	</select>
+	<select id="selectByConditionPage" parameterType="map"
+		resultMap="OilCardPaymentMap">
+		<![CDATA[
+	     select
+	        op.id as op_id,
+	        op.oilcard as op_oilcard,
+	        op.trip as op_trip,
+	        op.trip_route as op_trip_route,
+	        op.route as op_route,
+	        op.client as op_client,
+	        op.money as op_money,
+	        op.balance as op_balance,
+	        op.payDate as op_payDate,
+	        op.remark as op_remark,
+	        op.entryDate as op_entryDate,
+	        op.status as op_status,
+	        o.id as o_id,
+	        o.code as o_code,
+	        o.name as o_name,
+	        r.id as r_id,
+	        r.name as r_name,
+	        c.id as c_id,
+	        c.code as c_code,
+	        c.name as c_name
+	      from t_oilcard_payment op
+	      LEFT JOIN t_oilcard o ON o.id = op.oilcard
+	      LEFT JOIN t_route r ON r.id = op.route
+	      LEFT JOIN t_client c ON c.id = op.client
+	  ]]>
+		<where>
+			<if test="yearMonth != NULL">
+				DATE_FORMAT(op.payDate, '%Y-%m') = #{yearMonth }
+			</if>
+			<if test="client != NULL">
+				AND op.client = #{client }
+			</if>
+			<if test="oilcard != NULL">
+				AND op.oilcard = #{oilcard }
+			</if>
+		</where>
+	</select>
+	<select id="selectByTrip" parameterType="long" resultMap="OilCardPaymentMap">
+		<![CDATA[
+	      select
+	        op.id as op_id,
+	        op.oilcard as op_oilcard,
+	        op.trip as op_trip,
+	        op.trip_route as op_trip_route,
+	        op.route as op_route,
+	        op.client as op_client,
+	        op.money as op_money,
+	        op.balance as op_balance,
+	        op.payDate as op_payDate,
+	        op.remark as op_remark,
+	        op.entryDate as op_entryDate,
+	        op.status as op_status,
+	        o.id as o_id,
+	        o.code as o_code,
+	        o.name as o_name,
+	        r.id as r_id,
+	        r.name as r_name,
+	        c.id as c_id,
+	        c.code as c_code,
+	        c.name as c_name
+	      from t_oilcard_payment op
+	      LEFT JOIN t_oilcard o ON o.id = op.oilcard
+	      LEFT JOIN t_route r ON r.id = op.route
+	      LEFT JOIN t_client c ON c.id = op.client
+	      WHERE
+	        op.trip = #{tripId }
+	  ]]>
+	</select>
+	<select id="countMoneyByTrip" parameterType="Trip" resultType="integer">
+	  <![CDATA[
+	    select sum(money) from t_oilcard_payment
+		where
+		     trip = #{id}
+	  ]]>
+	</select>
+	<delete id="deleteByTripRoute" parameterType="TripRoute">
+		delete from
+		t_oilcard_payment
+		where
+		trip_route = #{id }
+	</delete>
+	<delete id="deleteByTrip" parameterType="Trip">
+		delete from
+		t_oilcard_payment
+		where
+		trip = #{id }
+	</delete>
+	<update id="updateStatusByTrip" parameterType="Trip">
+	   <![CDATA[
+	      update t_oilcard_payment
+	      set
+	       status = #{status }
+	      where
+	        trip = #{id }
+	   ]]>
+	</update>
+	<select id="countMoneyByTripRoute" parameterType="TripRoute"
+		resultType="integer">
+	   <![CDATA[
+	    select sum(money) from t_oilcard_payment
+		where
+		     trip_route = #{id}
+		  AND client = #{client.id }
+	  ]]>
+	</select>
+</mapper>  

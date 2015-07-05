@@ -1,0 +1,156 @@
+<?xml version="1.0" encoding="UTF-8" ?>  
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="weber.logistics.module.car.dao.ClientDao">
+	<resultMap type="Client" id="ClientMap">
+		<id column="cl_id" property="id" />
+		<result column="cl_code" property="code" />
+		<result column="cl_name" property="name" />
+		<result column="cl_linkman" property="linkman" />
+		<result column="cl_phone" property="phone" />
+		<result column="cl_address" property="address" />
+		<result column="cl_introduce" property="introduce" />
+		<result column="cl_entryDate" property="entryDate" />
+		<result column="cl_status" property="status" />
+		<result column="p_id" property="province.id" />
+		<result column="p_name" property="province.name" />
+		<result column="c_id" property="city.id" />
+		<result column="c_name" property="city.name" />
+	</resultMap>
+	<!-- 新增记录 -->
+	<insert id="insert" parameterType="Client">
+	   <![CDATA[
+	     insert into t_client
+	                 (id, code , name,
+	                  linkman, phone, province,
+	                  city, address, introduce,
+	                  entryDate)
+		       values(#{id}, #{code}, #{name},
+		              #{linkman}, #{phone}, #{province.id},
+		              #{city.id}, #{address}, #{introduce},
+		              #{entryDate})
+	   ]]>
+	</insert>
+	<!-- 修改记录 -->
+	<update id="update" parameterType="Client">
+	   <![CDATA[
+	     update t_client
+		 set 
+		   code = #{code},
+		   name = #{name},
+		   linkman = #{linkman},
+		   phone = #{phone},
+		   province = #{province.id},
+	 	   city = #{city.id},
+		   address = #{address},
+		   introduce = #{introduce}
+		 where 
+		   id = #{id}
+	   ]]>
+	</update>
+	<!-- 查询单条记录 -->
+	<select id="selectOne" parameterType="Client" resultMap="ClientMap">
+	   <![CDATA[
+	      select
+		    cl.id as cl_id,
+		    cl.code as cl_code,
+		    cl.name as cl_name,
+		    cl.linkman as cl_linkman,
+		    cl.phone as cl_phone,
+		    cl.province as cl_province,
+		    cl.city as cl_city,
+		    cl.address as cl_address,
+		    cl.introduce as cl_introduce,
+		    cl.entryDate as cl_entryDate,
+		    cl.status as cl_status,
+		    p.id as p_id,
+		    p.name as p_name,
+	 	    c.id as c_id,
+		    c.name as c_name
+		  from t_client cl
+		  left join t_province p on p.id = cl.province 
+		  left join t_city c on c.id = cl.city
+		  where 
+		    cl.id = #{id }
+	   ]]>
+	</select>
+	<select id="selectAll" resultMap="ClientMap">
+		 <![CDATA[
+	      select
+		    cl.id as cl_id,
+		    cl.code as cl_code,
+		    cl.name as cl_name,
+		    cl.linkman as cl_linkman,
+		    cl.phone as cl_phone,
+		    cl.province as cl_province,
+		    cl.city as cl_city,
+		    cl.address as cl_address,
+		    cl.introduce as cl_introduce,
+		    cl.entryDate as cl_entryDate,
+		    cl.status as cl_status,
+		    p.id as p_id,
+		    p.name as p_name,
+	 	    c.id as c_id,
+		    c.name as c_name
+		  from t_client cl
+		  left join t_province p on p.id = cl.province 
+		  left join t_city c on c.id = cl.city
+	   ]]>
+	</select>
+	<select id="selectByConditionPage" parameterType="map"
+		resultMap="ClientMap">
+		 <![CDATA[
+	      select
+		    cl.id as cl_id,
+		    cl.code as cl_code,
+		    cl.name as cl_name,
+		    cl.linkman as cl_linkman,
+		    cl.phone as cl_phone,
+		    cl.province as cl_province,
+		    cl.city as cl_city,
+		    cl.address as cl_address,
+		    cl.introduce as cl_introduce,
+		    cl.entryDate as cl_entryDate,
+		    cl.status as cl_status,
+		    p.id as p_id,
+		    p.name as p_name,
+	 	    c.id as c_id,
+		    c.name as c_name
+		  from t_client cl
+		  left join t_province p on p.id = cl.province 
+		  left join t_city c on c.id = cl.city
+	   ]]>
+		<where>
+			<if test="name != null">
+				cl.name like CONCAT('%', #{name },'%')
+			</if>
+		</where>
+	</select>
+	<select id="selectByCode" parameterType="string" resultMap="ClientMap">
+	    <![CDATA[
+	      select
+		    cl.id as cl_id,
+		    cl.code as cl_code,
+		    cl.name as cl_name,
+		    cl.linkman as cl_linkman,
+		    cl.phone as cl_phone,
+		    cl.province as cl_province,
+		    cl.city as cl_city,
+		    cl.address as cl_address,
+		    cl.introduce as cl_introduce,
+		    cl.entryDate as cl_entryDate,
+		    cl.status as cl_status,
+		    p.id as p_id,
+		    p.name as p_name,
+	 	    c.id as c_id,
+		    c.name as c_name
+		  from t_client cl
+		  left join t_province p on p.id = cl.province 
+		  left join t_city c on c.id = cl.city
+		  where 
+		    cl.code = #{code }
+	   ]]>
+	</select>
+</mapper>  

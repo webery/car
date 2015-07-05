@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="UTF-8" ?>  
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="weber.logistics.module.car.dao.RouteDao">
+	<resultMap type="Route" id="RouteMap">
+		<id column="r_id" property="id" />
+		<result column="r_name" property="name" />
+		<result column="c1_id" property="start.id" />
+		<result column="c1_name" property="start.name" />
+		<result column="c2_id" property="destination.id" />
+		<result column="c2_name" property="destination.name" />
+	</resultMap>
+	<!-- 新增记录 -->
+	<insert id="insert" parameterType="Route">
+	  <![CDATA[
+	    insert into
+		t_route(id, start, destination,
+		        name)
+		values(#{id}, #{start.id}, #{destination.id},
+		     #{name})
+	  ]]>
+	</insert>
+	<!-- 查询单条记录 -->
+	<select id="selectOne" parameterType="Route" resultMap="RouteMap">
+	  <![CDATA[
+	    select
+	      r.id as r_id,
+		  r.start as r_start,
+		  r.destination as r_destination,
+		  r.name as r_name,
+		  c1.id as c1_id,
+		  c1.name as c1_name,
+		  c2.id as c2_id,
+		  c2.name as c2_name
+	    from t_route r
+	    LEFT JOIN t_city c1 ON r.start = c1.id
+		LEFT JOIN t_city c2 ON r.destination = c2.id
+		where
+		      r.id = #{id }
+	  ]]>
+	</select>
+	<select id="selectByConditionPage" parameterType="map"
+		resultMap="RouteMap">
+		<![CDATA[
+		   select
+	      r.id as r_id,
+		  r.start as r_start,
+		  r.destination as r_destination,
+		  r.name as r_name,
+		  c1.id as c1_id,
+		  c1.name as c1_name,
+		  c2.id as c2_id,
+		  c2.name as c2_name
+	    from t_route r
+	    LEFT JOIN t_city c1 ON r.start = c1.id
+		LEFT JOIN t_city c2 ON r.destination = c2.id
+		]]>
+		<if test="cityName != null">
+			where
+			r.name like concat('%',#{cityName},'%')
+		</if>
+	</select>
+	<select id="selectByCity" parameterType="Route" resultMap="RouteMap">
+	  <![CDATA[
+	     select
+	      r.id as r_id,
+		  r.start as r_start,
+		  r.destination as r_destination,
+		  r.name as r_name,
+		  c1.id as c1_id,
+		  c1.name as c1_name,
+		  c2.id as c2_id,
+		  c2.name as c2_name
+	    from t_route r
+	    LEFT JOIN t_city c1 ON r.start = c1.id
+		LEFT JOIN t_city c2 ON r.destination = c2.id
+		where
+		      r.start = #{start.id}
+		  and r.destination = #{destination.id}
+	  ]]>
+	</select>
+</mapper>  

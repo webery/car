@@ -1,0 +1,170 @@
+<?xml version="1.0" encoding="UTF-8" ?>  
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="weber.logistics.module.car.dao.TripTrafficDao">
+	<resultMap type="TripTraffic" id="TripTrafficMap">
+		<id column="tt_id" property="id" />
+		<result column="tt_name" property="name" />
+		<result column="tt_fine" property="fine" />
+		<result column="tt_point" property="point" />
+		<result column="tt_address" property="address" />
+		<result column="tt_remark" property="remark" />
+		<result column="tt_entryDate" property="entryDate" />
+		<result column="tt_status" property="status" />
+	</resultMap>
+	<!-- 新增记录 -->
+	<insert id="insert" parameterType="TripTraffic">
+	   <![CDATA[
+	      insert into t_trip_traffic
+	                  (id, name, fine,
+		               point, address, remark,
+		               entryDate)
+		        values(#{id}, #{name}, #{fine},
+		               #{point}, #{address}, #{remark},
+		               #{entryDate})
+	   ]]>
+	</insert>
+	<!-- 真删除记录 -->
+	<delete id="delete" parameterType="TripTraffic">
+	   <![CDATA[
+	      delete from t_trip_traffic
+	      where
+		    id = #{id }
+	   ]]>
+	</delete>
+	<!-- 修改记录 -->
+	<update id="update" parameterType="TripTraffic">
+	   <![CDATA[
+	     update t_trip_traffic
+		 set
+		   name = #{name},
+		   fine = #{fine},
+		   point = #{point},
+		   address = #{address},
+		   remark = #{remark}
+		 where
+		   id = #{id}
+	   ]]>
+	</update>
+	<!-- 查询单条记录 -->
+	<select id="selectOne" parameterType="TripTraffic" resultMap="TripTrafficMap">
+	   <![CDATA[
+	      select
+	        tt.id as tt_id,
+	        tt.name as tt_name,
+	        tt.fine as tt_fine,
+	        tt.point as tt_point,
+	        tt.address as tt_address,
+	        tt.remark as tt_remark,
+	        tt.entryDate as tt_entryDate,
+	        tt.status as tt_status
+	      from t_trip_traffic tt
+	      where
+	        tt.id = #{id}
+	   ]]>
+	</select>
+	<select id="selectAll" resultType="TripTraffic">
+		<![CDATA[
+	      select
+	        tt.id as tt_id,
+	        tt.name as tt_name,
+	        tt.fine as tt_fine,
+	        tt.point as tt_point,
+	        tt.address as tt_address,
+	        tt.remark as tt_remark,
+	        tt.entryDate as tt_entryDate,
+	        tt.status as tt_status
+	      from t_trip_traffic tt
+	   ]]>
+	</select>
+	<select id="selectByConditionPage" parameterType="map"
+		resultMap="TripTrafficMap">
+		 <![CDATA[
+	      select
+	        tt.id as tt_id,
+	        tt.name as tt_name,
+	        tt.fine as tt_fine,
+	        tt.point as tt_point,
+	        tt.address as tt_address,
+	        tt.remark as tt_remark,
+	        tt.entryDate as tt_entryDate,
+	        tt.status as tt_status
+	      from t_trip_traffic tt
+	      where
+	        tt.id = #{id}
+	   ]]>
+	</select>
+	<select id="selectByTrip" parameterType="long" resultMap="TripTrafficMap">
+		select
+		tt.id as tt_id,
+		tt.trip as tt_trip,
+		tt.name as tt_name,
+		tt.fine as
+		tt_fine,
+		tt.point as tt_point,
+		tt.fineDate as tt_fineDate,
+		tt.address as
+		tt_address,
+		tt.remark as tt_remark,
+		tt.entryDate as
+		tt_entryDate,
+		tt.status as tt_status,
+		t.id as
+		t_id,
+		t.code as t_code,
+		t.employee as
+		t_employee
+		from t_trip_traffic tt
+		LEFT JOIN t_trip t ON
+		tt.trip =
+		t.id
+		where tt.trip = #{tripId}
+	</select>
+	<select id="countFineByTrip" parameterType="map" resultType="integer">
+		select sum(fine)
+		from t_trip_traffic
+		where
+		trip
+		= #{tripId}
+		and (status =
+		#{goingStatus}
+		or status = #{finishStatus})
+	</select>
+	<!-- 订单完成的时候把所有单路线的状态变成完成 -->
+	<update id="updateStatusByTripTraffic" parameterType="TripTraffic">
+		update
+		t_trip_traffic
+		set
+		status =
+		#{status}
+		where id = #{id}
+	</update>
+	<update id="updateStatusByTrip" parameterType="Trip">
+		update
+		t_trip_traffic
+		set
+		status =
+		#{status}
+		where id = #{id}
+	</update>
+	<update id="updateStatusWithFilterByTrip" parameterType="map">
+		update
+		t_trip_traffic
+		set
+		status =
+		#{status}
+		where trip = #{tripId} and status !=
+		#{statusFilter}
+	</update>
+	<select id="selectByTripIdAndStatus" parameterType="map"
+		resultMap="TripTrafficMap">
+	</select>
+	<delete id="deleteByTrip" parameterType="Trip">
+		delete from
+		t_trip_traffic
+		where
+		id = #{id }
+	</delete>
+</mapper>  
